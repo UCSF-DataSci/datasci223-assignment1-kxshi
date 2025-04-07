@@ -40,15 +40,21 @@ jobs:
         git fetch upstream
         
         # Merge the changes from upstream/main into the current branch
-        git merge upstream/main --allow-unrelated-histories
+        git merge upstream/main --allow-unrelated-histories || true
         
         # If there are conflicts, resolve them by taking the upstream version
         # This is a simple approach - you might want more sophisticated conflict resolution
-        git checkout --theirs tests/
-        git add tests/
+        if [ -d "tests/" ]; then
+          git checkout --theirs tests/ || true
+          git add tests/ || true
+        fi
         
-        # Commit the merged changes
-        git commit -m "Merge updates from upstream template"
+        # Commit the merged changes if there are any changes to commit
+        if git diff --staged --quiet; then
+          echo "No changes to commit after merge"
+        else
+          git commit -m "Merge updates from upstream template"
+        fi
     
     - name: Install dependencies
       run: |
