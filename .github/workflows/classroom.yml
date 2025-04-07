@@ -12,11 +12,52 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Fetch all history for all branches and tags
     
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
+    
+    - name: Pull updates from upstream
+      run: |
+        # Configure git to allow merging unrelated histories
+        git config --global pull.rebase false
+        
+        # Set git user identity
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "actions@github.com"
+        
+        # Hardcoded upstream repository URL (using HTTPS instead of SSH)
+        UPSTREAM_URL="https://github.com/UCSF-DataSci/ucsf-datasci-223-25-winter-test-0-datasci223_assignment1.git"
+        echo "Setting upstream to: $UPSTREAM_URL"
+        
+        # Add the upstream repository
+        git remote add upstream $UPSTREAM_URL
+        
+        # Fetch the latest changes from upstream
+        git fetch upstream
+        
+        # Merge the changes from upstream/main into the current branch
+        git merge upstream/main --allow-unrelated-histories
+        
+        # If there are conflicts, resolve them by taking the upstream version
+        # This is a simple approach - you might want more sophisticated conflict resolution
+        git checkout --theirs tests/
+        git add tests/
+        
+        # Commit the merged changes
+        git commit -m "Merge updates from upstream template"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+    
+    - name: Run tests
+      run: |
+        pytest tests/test_email_hasher.py -v
     
     - name: Check for README.md
       run: |
@@ -27,38 +68,4 @@ jobs:
         
         if ! grep -q "http" README.md; then
           echo "WARNING: README.md might be missing a link to music recommendation"
-        fi
-    
-    - name: Verify hash format
-      run: |
-        # Create a test email hasher script if it doesn't exist
-        if [ ! -f "email_hasher.py" ]; then
-          echo "ERROR: email_hasher.py file is missing"
-          exit 1
-        fi
-        
-        # Run the script with a test email
-        python email_hasher.py "test@example.com"
-        
-        # Check if hash.email file exists
-        if [ ! -f "hash.email" ]; then
-          echo "ERROR: hash.email file was not created"
-          exit 1
-        fi
-        
-        # Read the hash and remove all whitespace
-        HASH_OUTPUT=$(cat hash.email | tr -d '[:space:]')
-        
-        # Check hash length (should be 64 characters)
-        if [ ${#HASH_OUTPUT} -ne 64 ]; then
-          echo "ERROR: Hash length is not 64 characters (after removing whitespace)"
-          exit 1
-        fi
-        
-        # Check that all characters are valid hex digits
-        if ! [[ $HASH_OUTPUT =~ ^[0-9a-fA-F]{64}$ ]]; then
-          echo "ERROR: Hash contains non-hexadecimal characters"
-          exit 1
-        fi
-        
-        echo "Hash format verification passed" 
+        fi 
