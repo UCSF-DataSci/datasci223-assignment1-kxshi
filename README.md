@@ -49,11 +49,11 @@ This assignment will help you practice:
 - Clone the repository to your local machine to begin working on the assignment
 
 ### Part 1: Update this README.md
-Replace the "Part 1" section with:
-- A brief introduction about yourself (first name only)
-- What you're hoping to get out of this course
-- Topics you would like to see included
-- A musical recommendation and a link to something about it (song, album, artist)
+Kevin - UCSF nephrology fellow
+Research interests - AI, implementation science, QI, nephrology workflows
+Basic coding skills for tuning and evaluating AI tools
+Discussion of Python environments/architecture (this is so confusing to me)
+I survived night float powered solely by Chappell Roan. https://www.youtube.com/watch?v=y9Wxl9Q9lUQ
 
 ### Part 2: Complete the email_hasher.py Script
 The email_hasher.py script should:
