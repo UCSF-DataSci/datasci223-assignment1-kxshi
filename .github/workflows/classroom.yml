@@ -25,8 +25,8 @@ jobs:
         # Configure git to allow merging unrelated histories
         git config --global pull.rebase false
         
-        # Hardcoded upstream repository URL
-        UPSTREAM_URL="git@github.com:UCSF-DataSci/ucsf-datasci-223-25-winter-test-0-datasci223_assignment1.git"
+        # Hardcoded upstream repository URL (using HTTPS instead of SSH)
+        UPSTREAM_URL="https://github.com/UCSF-DataSci/ucsf-datasci-223-25-winter-test-0-datasci223_assignment1.git"
         echo "Setting upstream to: $UPSTREAM_URL"
         
         # Add the upstream repository
