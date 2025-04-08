@@ -58,12 +58,12 @@ def main():
         print("Error: No email entered.")
         sys.exit(1)
 
-    # pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
     email_argument = sys.argv[1]
 
-    # if not re.match(pattern, email_argument):
-        # print("Error: What was entered wasn't detected as an email.")
-        # sys.exit(1)
+    if not re.match(pattern, email_argument):
+        print("Error: What was entered wasn't detected as an email.")
+        sys.exit(1)
     # 3. If yes, hash the email address
     # 4. Write the hash to a file named "hash.email"
     hashed = hash_email(email_argument)
