@@ -69,8 +69,15 @@ jobs:
           git commit -m "Merge updates from upstream template"
         fi
         
-        # Switch back to the original branch
-        git checkout main
+        # Switch back to the original branch (explicitly use origin/main)
+        CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+        if [ "$CURRENT_BRANCH" != "HEAD" ]; then
+          echo "Switching back to $CURRENT_BRANCH"
+          git checkout $CURRENT_BRANCH
+        else
+          echo "Switching back to origin/main"
+          git checkout origin/main
+        fi
         
         # Apply the changes from the temporary branch
         git merge temp-merge-branch --allow-unrelated-histories
