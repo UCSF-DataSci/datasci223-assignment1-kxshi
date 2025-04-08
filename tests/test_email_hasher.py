@@ -5,7 +5,7 @@ import subprocess
 import pytest
 
 # Test constants
-TEST_INPUT = "42"
+TEST_INPUT = "asdf@asdf.edu"
 EXPECTED_SHA256_HASH = hashlib.sha256(TEST_INPUT.encode()).hexdigest()
 
 def test_script_exists():
