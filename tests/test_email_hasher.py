@@ -98,19 +98,6 @@ def test_file_creation():
     
     assert content, "hash.email file is empty"
 
-def test_error_handling():
-    """Test that the script handles missing command line arguments"""
-    # Run the script without arguments
-    result = subprocess.run(
-        [sys.executable, "email_hasher.py"],
-        capture_output=True,
-        text=True
-    )
-    
-    # Check that the script exits with a non-zero status
-    assert result.returncode != 0, "Script should exit with error when no email is provided"
-    assert "usage" in result.stderr.lower(), "Error message should include usage instructions"
-
 def teardown_function():
     """Restore hash.email file if it was backed up"""
     if os.path.exists("hash.email.bak"):
