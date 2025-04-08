@@ -5,7 +5,7 @@
 ## Overview
 This assignment will help you practice:
 1. Using GitHub for version control
-2. Writing a simple Python script
+2. Writing a simple Python script 
 3. Working with command line arguments
 4. Implementing basic file I/O operations
 5. Using the hashlib library for cryptographic hashing
