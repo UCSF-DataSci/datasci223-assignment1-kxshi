@@ -42,6 +42,9 @@ jobs:
         # Fetch the latest changes from upstream (read-only)
         git fetch upstream
         
+        # Save the current branch name BEFORE creating temp branch
+        ORIGINAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+        
         # Create a temporary branch for the merge
         git checkout -b temp-merge-branch
         
@@ -69,11 +72,10 @@ jobs:
           git commit -m "Merge updates from upstream template"
         fi
         
-        # Switch back to the original branch (explicitly use origin/main)
-        CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-        if [ "$CURRENT_BRANCH" != "HEAD" ]; then
-          echo "Switching back to $CURRENT_BRANCH"
-          git checkout $CURRENT_BRANCH
+        # Switch back to the original branch saved earlier
+        if [ "$ORIGINAL_BRANCH" != "HEAD" ]; then
+          echo "Switching back to $ORIGINAL_BRANCH"
+          git checkout $ORIGINAL_BRANCH
         else
           echo "Switching back to origin/main"
           git checkout origin/main
@@ -83,7 +85,7 @@ jobs:
         git merge temp-merge-branch --allow-unrelated-histories
         
         # Ensure we are on the original branch before deleting temp-merge-branch
-        git checkout $CURRENT_BRANCH || git checkout origin/main
+        git checkout $ORIGINAL_BRANCH || git checkout origin/main
         
         # Clean up
         git branch -D temp-merge-branch
