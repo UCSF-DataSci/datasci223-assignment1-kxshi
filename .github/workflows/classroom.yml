@@ -82,6 +82,9 @@ jobs:
         # Apply the changes from the temporary branch
         git merge temp-merge-branch --allow-unrelated-histories
         
+        # Ensure we are on the original branch before deleting temp-merge-branch
+        git checkout $CURRENT_BRANCH || git checkout origin/main
+        
         # Clean up
         git branch -D temp-merge-branch
         
